@@ -1,0 +1,1250 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "b96b2cc0",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt\n",
+    "import seaborn as sns\n",
+    "pd.set_option(\"display.max_columns\", 100)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "6d277cef",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df = pd.read_csv('train.csv')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9f9588ba",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "6f81503b",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<class 'pandas.core.frame.DataFrame'>\n",
+      "RangeIndex: 1460 entries, 0 to 1459\n",
+      "Data columns (total 81 columns):\n",
+      " #   Column         Non-Null Count  Dtype  \n",
+      "---  ------         --------------  -----  \n",
+      " 0   Id             1460 non-null   int64  \n",
+      " 1   MSSubClass     1460 non-null   int64  \n",
+      " 2   MSZoning       1460 non-null   object \n",
+      " 3   LotFrontage    1201 non-null   float64\n",
+      " 4   LotArea        1460 non-null   int64  \n",
+      " 5   Street         1460 non-null   object \n",
+      " 6   Alley          91 non-null     object \n",
+      " 7   LotShape       1460 non-null   object \n",
+      " 8   LandContour    1460 non-null   object \n",
+      " 9   Utilities      1460 non-null   object \n",
+      " 10  LotConfig      1460 non-null   object \n",
+      " 11  LandSlope      1460 non-null   object \n",
+      " 12  Neighborhood   1460 non-null   object \n",
+      " 13  Condition1     1460 non-null   object \n",
+      " 14  Condition2     1460 non-null   object \n",
+      " 15  BldgType       1460 non-null   object \n",
+      " 16  HouseStyle     1460 non-null   object \n",
+      " 17  OverallQual    1460 non-null   int64  \n",
+      " 18  OverallCond    1460 non-null   int64  \n",
+      " 19  YearBuilt      1460 non-null   int64  \n",
+      " 20  YearRemodAdd   1460 non-null   int64  \n",
+      " 21  RoofStyle      1460 non-null   object \n",
+      " 22  RoofMatl       1460 non-null   object \n",
+      " 23  Exterior1st    1460 non-null   object \n",
+      " 24  Exterior2nd    1460 non-null   object \n",
+      " 25  MasVnrType     1452 non-null   object \n",
+      " 26  MasVnrArea     1452 non-null   float64\n",
+      " 27  ExterQual      1460 non-null   object \n",
+      " 28  ExterCond      1460 non-null   object \n",
+      " 29  Foundation     1460 non-null   object \n",
+      " 30  BsmtQual       1423 non-null   object \n",
+      " 31  BsmtCond       1423 non-null   object \n",
+      " 32  BsmtExposure   1422 non-null   object \n",
+      " 33  BsmtFinType1   1423 non-null   object \n",
+      " 34  BsmtFinSF1     1460 non-null   int64  \n",
+      " 35  BsmtFinType2   1422 non-null   object \n",
+      " 36  BsmtFinSF2     1460 non-null   int64  \n",
+      " 37  BsmtUnfSF      1460 non-null   int64  \n",
+      " 38  TotalBsmtSF    1460 non-null   int64  \n",
+      " 39  Heating        1460 non-null   object \n",
+      " 40  HeatingQC      1460 non-null   object \n",
+      " 41  CentralAir     1460 non-null   object \n",
+      " 42  Electrical     1459 non-null   object \n",
+      " 43  1stFlrSF       1460 non-null   int64  \n",
+      " 44  2ndFlrSF       1460 non-null   int64  \n",
+      " 45  LowQualFinSF   1460 non-null   int64  \n",
+      " 46  GrLivArea      1460 non-null   int64  \n",
+      " 47  BsmtFullBath   1460 non-null   int64  \n",
+      " 48  BsmtHalfBath   1460 non-null   int64  \n",
+      " 49  FullBath       1460 non-null   int64  \n",
+      " 50  HalfBath       1460 non-null   int64  \n",
+      " 51  BedroomAbvGr   1460 non-null   int64  \n",
+      " 52  KitchenAbvGr   1460 non-null   int64  \n",
+      " 53  KitchenQual    1460 non-null   object \n",
+      " 54  TotRmsAbvGrd   1460 non-null   int64  \n",
+      " 55  Functional     1460 non-null   object \n",
+      " 56  Fireplaces     1460 non-null   int64  \n",
+      " 57  FireplaceQu    770 non-null    object \n",
+      " 58  GarageType     1379 non-null   object \n",
+      " 59  GarageYrBlt    1379 non-null   float64\n",
+      " 60  GarageFinish   1379 non-null   object \n",
+      " 61  GarageCars     1460 non-null   int64  \n",
+      " 62  GarageArea     1460 non-null   int64  \n",
+      " 63  GarageQual     1379 non-null   object \n",
+      " 64  GarageCond     1379 non-null   object \n",
+      " 65  PavedDrive     1460 non-null   object \n",
+      " 66  WoodDeckSF     1460 non-null   int64  \n",
+      " 67  OpenPorchSF    1460 non-null   int64  \n",
+      " 68  EnclosedPorch  1460 non-null   int64  \n",
+      " 69  3SsnPorch      1460 non-null   int64  \n",
+      " 70  ScreenPorch    1460 non-null   int64  \n",
+      " 71  PoolArea       1460 non-null   int64  \n",
+      " 72  PoolQC         7 non-null      object \n",
+      " 73  Fence          281 non-null    object \n",
+      " 74  MiscFeature    54 non-null     object \n",
+      " 75  MiscVal        1460 non-null   int64  \n",
+      " 76  MoSold         1460 non-null   int64  \n",
+      " 77  YrSold         1460 non-null   int64  \n",
+      " 78  SaleType       1460 non-null   object \n",
+      " 79  SaleCondition  1460 non-null   object \n",
+      " 80  SalePrice      1460 non-null   int64  \n",
+      "dtypes: float64(3), int64(35), object(43)\n",
+      "memory usage: 924.0+ KB\n"
+     ]
+    }
+   ],
+   "source": [
+    "#Non-Null Count by Column, Max = 1460 if all rows for that column have a value: \n",
+    "df.info()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "3d3aa226",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "696c44d7",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "PoolQC          1453\n",
+       "MiscFeature     1406\n",
+       "Alley           1369\n",
+       "Fence           1179\n",
+       "FireplaceQu      690\n",
+       "LotFrontage      259\n",
+       "GarageYrBlt       81\n",
+       "GarageCond        81\n",
+       "GarageType        81\n",
+       "GarageFinish      81\n",
+       "GarageQual        81\n",
+       "BsmtFinType2      38\n",
+       "BsmtExposure      38\n",
+       "BsmtQual          37\n",
+       "BsmtCond          37\n",
+       "BsmtFinType1      37\n",
+       "MasVnrArea         8\n",
+       "MasVnrType         8\n",
+       "Electrical         1\n",
+       "Id                 0\n",
+       "Functional         0\n",
+       "Fireplaces         0\n",
+       "KitchenQual        0\n",
+       "KitchenAbvGr       0\n",
+       "BedroomAbvGr       0\n",
+       "dtype: int64"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "#Rank column by number of \"NaN\" Values: \n",
+    "df.isna().sum(axis=0).sort_values(ascending=False).head(25)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "555df36a",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "28d9ecf8",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "NaN    1453\n",
+       "Gd        3\n",
+       "Ex        2\n",
+       "Fa        2\n",
+       "Name: PoolQC, dtype: int64"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['PoolQC'].value_counts(dropna=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "b8dfcc2e",
+   "metadata": {},
+   "source": [
+    "PoolQC: Pool quality\n",
+    "\t\t\n",
+    "       Ex\tExcellent\n",
+    "       Gd\tGood\n",
+    "       TA\tAverage/Typical\n",
+    "       Fa\tFair\n",
+    "       NA\tNo Pool"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "832d36d1",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "2cf04aed",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "NaN     1406\n",
+       "Shed      49\n",
+       "Gar2       2\n",
+       "Othr       2\n",
+       "TenC       1\n",
+       "Name: MiscFeature, dtype: int64"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['MiscFeature'].value_counts(dropna=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "fe024fb0",
+   "metadata": {},
+   "source": [
+    "MiscFeature: Miscellaneous feature not covered in other categories\n",
+    "\t\t\n",
+    "       Elev\tElevator\n",
+    "       Gar2\t2nd Garage (if not described in garage section)\n",
+    "       Othr\tOther\n",
+    "       Shed\tShed (over 100 SF)\n",
+    "       TenC\tTennis Court\n",
+    "       NA\tNone"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e1db8c51",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "d390d8a9",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "NaN     1369\n",
+       "Grvl      50\n",
+       "Pave      41\n",
+       "Name: Alley, dtype: int64"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['Alley'].value_counts(dropna=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "114d16f7",
+   "metadata": {},
+   "source": [
+    "Alley: Type of alley access to property\n",
+    "\n",
+    "       Grvl\tGravel\n",
+    "       Pave\tPaved\n",
+    "       NA \tNo alley access"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "2beda199",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "c4b0151b",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "NaN      1179\n",
+       "MnPrv     157\n",
+       "GdPrv      59\n",
+       "GdWo       54\n",
+       "MnWw       11\n",
+       "Name: Fence, dtype: int64"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['Fence'].value_counts(dropna=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ea63b477",
+   "metadata": {},
+   "source": [
+    "Fence: Fence quality\n",
+    "\t\t\n",
+    "       GdPrv\tGood Privacy\n",
+    "       MnPrv\tMinimum Privacy\n",
+    "       GdWo\tGood Wood\n",
+    "       MnWw\tMinimum Wood/Wire\n",
+    "       NA\tNo Fence"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4b2faf21",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "a2663539",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "NaN    690\n",
+       "Gd     380\n",
+       "TA     313\n",
+       "Fa      33\n",
+       "Ex      24\n",
+       "Po      20\n",
+       "Name: FireplaceQu, dtype: int64"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['FireplaceQu'].value_counts(dropna=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "2d79b5b5",
+   "metadata": {},
+   "source": [
+    "FireplaceQu: Fireplace quality\n",
+    "\n",
+    "       Ex\tExcellent - Exceptional Masonry Fireplace\n",
+    "       Gd\tGood - Masonry Fireplace in main level\n",
+    "       TA\tAverage - Prefabricated Fireplace in main living area or Masonry Fireplace in basement\n",
+    "       Fa\tFair - Prefabricated Fireplace in basement\n",
+    "       Po\tPoor - Ben Franklin Stove\n",
+    "       NA\tNo Fireplace"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "2a601772",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "id": "095abee3",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "NaN      259\n",
+       "60.0     143\n",
+       "70.0      70\n",
+       "80.0      69\n",
+       "50.0      57\n",
+       "        ... \n",
+       "137.0      1\n",
+       "38.0       1\n",
+       "33.0       1\n",
+       "150.0      1\n",
+       "46.0       1\n",
+       "Name: LotFrontage, Length: 111, dtype: int64"
+      ]
+     },
+     "execution_count": 10,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['LotFrontage'].value_counts(dropna=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "1a9238fa",
+   "metadata": {},
+   "source": [
+    "LotFrontage: Linear feet of street connected to property"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a5cbd36b",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "4f94f20e",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "NaN       81\n",
+       "2005.0    65\n",
+       "2006.0    59\n",
+       "2004.0    53\n",
+       "2003.0    50\n",
+       "          ..\n",
+       "1927.0     1\n",
+       "1900.0     1\n",
+       "1906.0     1\n",
+       "1908.0     1\n",
+       "1933.0     1\n",
+       "Name: GarageYrBlt, Length: 98, dtype: int64"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['GarageYrBlt'].value_counts(dropna=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "4d76090a",
+   "metadata": {},
+   "source": [
+    "GarageYrBlt: Year garage was built"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "83dae4a5",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "id": "f076cb2d",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "TA     1326\n",
+       "NaN      81\n",
+       "Fa       35\n",
+       "Gd        9\n",
+       "Po        7\n",
+       "Ex        2\n",
+       "Name: GarageCond, dtype: int64"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['GarageCond'].value_counts(dropna=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "fad967ac",
+   "metadata": {},
+   "source": [
+    "GarageCond: Garage condition\n",
+    "\n",
+    "       Ex\tExcellent\n",
+    "       Gd\tGood\n",
+    "       TA\tTypical/Average\n",
+    "       Fa\tFair\n",
+    "       Po\tPoor\n",
+    "       NA\tNo Garage"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "fa20f629",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "id": "1c1fc226",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Attchd     870\n",
+       "Detchd     387\n",
+       "BuiltIn     88\n",
+       "NaN         81\n",
+       "Basment     19\n",
+       "CarPort      9\n",
+       "2Types       6\n",
+       "Name: GarageType, dtype: int64"
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['GarageType'].value_counts(dropna=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "0949a72a",
+   "metadata": {},
+   "source": [
+    "GarageType: Garage location\n",
+    "\t\t\n",
+    "       2Types\tMore than one type of garage\n",
+    "       Attchd\tAttached to home\n",
+    "       Basment\tBasement Garage\n",
+    "       BuiltIn\tBuilt-In (Garage part of house - typically has room above garage)\n",
+    "       CarPort\tCar Port\n",
+    "       Detchd\tDetached from home\n",
+    "       NA\tNo Garage"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "85569997",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "id": "6464c3b7",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Unf    605\n",
+       "RFn    422\n",
+       "Fin    352\n",
+       "NaN     81\n",
+       "Name: GarageFinish, dtype: int64"
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['GarageFinish'].value_counts(dropna=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "0df91a1c",
+   "metadata": {},
+   "source": [
+    "GarageFinish: Interior finish of the garage\n",
+    "\n",
+    "       Fin\tFinished\n",
+    "       RFn\tRough Finished\t\n",
+    "       Unf\tUnfinished\n",
+    "       NA\tNo Garage"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "58c18654",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "id": "f2c123b1",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "TA     1311\n",
+       "NaN      81\n",
+       "Fa       48\n",
+       "Gd       14\n",
+       "Ex        3\n",
+       "Po        3\n",
+       "Name: GarageQual, dtype: int64"
+      ]
+     },
+     "execution_count": 15,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['GarageQual'].value_counts(dropna=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "4c36c9d8",
+   "metadata": {},
+   "source": [
+    "GarageQual: Garage quality\n",
+    "\n",
+    "       Ex\tExcellent\n",
+    "       Gd\tGood\n",
+    "       TA\tTypical/Average\n",
+    "       Fa\tFair\n",
+    "       Po\tPoor\n",
+    "       NA\tNo Garage"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5eb5eef4",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "id": "3574ef95",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Unf    1256\n",
+       "Rec      54\n",
+       "LwQ      46\n",
+       "NaN      38\n",
+       "BLQ      33\n",
+       "ALQ      19\n",
+       "GLQ      14\n",
+       "Name: BsmtFinType2, dtype: int64"
+      ]
+     },
+     "execution_count": 16,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['BsmtFinType2'].value_counts(dropna=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f64ab47f",
+   "metadata": {},
+   "source": [
+    "BsmtFinType2: Rating of basement finished area (if multiple types)\n",
+    "\n",
+    "       GLQ\tGood Living Quarters\n",
+    "       ALQ\tAverage Living Quarters\n",
+    "       BLQ\tBelow Average Living Quarters\t\n",
+    "       Rec\tAverage Rec Room\n",
+    "       LwQ\tLow Quality\n",
+    "       Unf\tUnfinshed\n",
+    "       NA\tNo Basement"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b061fe51",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "id": "72196ad0",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "No     953\n",
+       "Av     221\n",
+       "Gd     134\n",
+       "Mn     114\n",
+       "NaN     38\n",
+       "Name: BsmtExposure, dtype: int64"
+      ]
+     },
+     "execution_count": 17,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['BsmtExposure'].value_counts(dropna=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "9b0b81cb",
+   "metadata": {},
+   "source": [
+    "BsmtExposure: Refers to walkout or garden level walls\n",
+    "\n",
+    "       Gd\tGood Exposure\n",
+    "       Av\tAverage Exposure (split levels or foyers typically score average or above)\t\n",
+    "       Mn\tMimimum Exposure\n",
+    "       No\tNo Exposure\n",
+    "       NA\tNo Basement"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "29af297b",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "id": "9f4155aa",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "TA     649\n",
+       "Gd     618\n",
+       "Ex     121\n",
+       "NaN     37\n",
+       "Fa      35\n",
+       "Name: BsmtQual, dtype: int64"
+      ]
+     },
+     "execution_count": 18,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['BsmtQual'].value_counts(dropna=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "665ea7d0",
+   "metadata": {},
+   "source": [
+    "BsmtQual: Evaluates the height of the basement\n",
+    "\n",
+    "       Ex\tExcellent (100+ inches)\t\n",
+    "       Gd\tGood (90-99 inches)\n",
+    "       TA\tTypical (80-89 inches)\n",
+    "       Fa\tFair (70-79 inches)\n",
+    "       Po\tPoor (<70 inches\n",
+    "       NA\tNo Basement"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "2da44021",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "id": "c311bac4",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "TA     1311\n",
+       "Gd       65\n",
+       "Fa       45\n",
+       "NaN      37\n",
+       "Po        2\n",
+       "Name: BsmtCond, dtype: int64"
+      ]
+     },
+     "execution_count": 19,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['BsmtCond'].value_counts(dropna=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "31bbb206",
+   "metadata": {},
+   "source": [
+    "BsmtCond: Evaluates the general condition of the basement\n",
+    "\n",
+    "       Ex\tExcellent\n",
+    "       Gd\tGood\n",
+    "       TA\tTypical - slight dampness allowed\n",
+    "       Fa\tFair - dampness or some cracking or settling\n",
+    "       Po\tPoor - Severe cracking, settling, or wetness\n",
+    "       NA\tNo Basement"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7e0b2572",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "id": "8bec7e6c",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Unf    430\n",
+       "GLQ    418\n",
+       "ALQ    220\n",
+       "BLQ    148\n",
+       "Rec    133\n",
+       "LwQ     74\n",
+       "NaN     37\n",
+       "Name: BsmtFinType1, dtype: int64"
+      ]
+     },
+     "execution_count": 20,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['BsmtFinType1'].value_counts(dropna=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "65ff8b69",
+   "metadata": {},
+   "source": [
+    "BsmtFinType1: Rating of basement finished area\n",
+    "\n",
+    "       GLQ\tGood Living Quarters\n",
+    "       ALQ\tAverage Living Quarters\n",
+    "       BLQ\tBelow Average Living Quarters\t\n",
+    "       Rec\tAverage Rec Room\n",
+    "       LwQ\tLow Quality\n",
+    "       Unf\tUnfinshed\n",
+    "       NA\tNo Basement"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "ed41122c",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "id": "7adabf07",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.0      861\n",
+       "NaN        8\n",
+       "72.0       8\n",
+       "108.0      8\n",
+       "180.0      8\n",
+       "        ... \n",
+       "562.0      1\n",
+       "89.0       1\n",
+       "921.0      1\n",
+       "762.0      1\n",
+       "119.0      1\n",
+       "Name: MasVnrArea, Length: 328, dtype: int64"
+      ]
+     },
+     "execution_count": 21,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['MasVnrArea'].value_counts(dropna=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "3484555f",
+   "metadata": {},
+   "source": [
+    "MasVnrArea: Masonry veneer area in square feet"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b9982e2c",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "id": "1105c591",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "None       864\n",
+       "BrkFace    445\n",
+       "Stone      128\n",
+       "BrkCmn      15\n",
+       "NaN          8\n",
+       "Name: MasVnrType, dtype: int64"
+      ]
+     },
+     "execution_count": 22,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['MasVnrType'].value_counts(dropna=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "24e08c67",
+   "metadata": {},
+   "source": [
+    "MasVnrType: Masonry veneer type\n",
+    "\n",
+    "       BrkCmn\tBrick Common\n",
+    "       BrkFace\tBrick Face\n",
+    "       CBlock\tCinder Block\n",
+    "       None\tNone\n",
+    "       Stone\tStone"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "70b38ab4",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "id": "141a0e38",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "SBrkr    1334\n",
+       "FuseA      94\n",
+       "FuseF      27\n",
+       "FuseP       3\n",
+       "Mix         1\n",
+       "NaN         1\n",
+       "Name: Electrical, dtype: int64"
+      ]
+     },
+     "execution_count": 23,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['Electrical'].value_counts(dropna=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "892f3dad",
+   "metadata": {},
+   "source": [
+    "Electrical: Electrical system\n",
+    "\n",
+    "       SBrkr\tStandard Circuit Breakers & Romex\n",
+    "       FuseA\tFuse Box over 60 AMP and all Romex wiring (Average)\t\n",
+    "       FuseF\t60 AMP Fuse Box and mostly Romex wiring (Fair)\n",
+    "       FuseP\t60 AMP Fuse Box and mostly knob & tube wiring (poor)\n",
+    "       Mix\tMixed"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "2e9c7135",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 28,
+   "id": "ff9945a6",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "864"
+      ]
+     },
+     "execution_count": 28,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "#Check for \"None\" Values...all belong to \"MasVnrType\" column.  \n",
+    "df.applymap(lambda x: x == \"None\").sum().sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "ecc80c48",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 29,
+   "id": "e8a626ce",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(1460, 81)"
+      ]
+     },
+     "execution_count": 29,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.shape"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "cd9be6d6",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "6674ebd8",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "hide_input": false,
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.8"
+  },
+  "varInspector": {
+   "cols": {
+    "lenName": 16,
+    "lenType": 16,
+    "lenVar": 40
+   },
+   "kernels_config": {
+    "python": {
+     "delete_cmd_postfix": "",
+     "delete_cmd_prefix": "del ",
+     "library": "var_list.py",
+     "varRefreshCmd": "print(var_dic_list())"
+    },
+    "r": {
+     "delete_cmd_postfix": ") ",
+     "delete_cmd_prefix": "rm(",
+     "library": "var_list.r",
+     "varRefreshCmd": "cat(var_dic_list()) "
+    }
+   },
+   "types_to_exclude": [
+    "module",
+    "function",
+    "builtin_function_or_method",
+    "instance",
+    "_Feature"
+   ],
+   "window_display": false
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
