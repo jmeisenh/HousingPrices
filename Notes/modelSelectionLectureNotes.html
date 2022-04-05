@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="generator" content="pandoc" />
+
+        <meta name="author" content="Justin Meisenhelter" />
+    
+    
+    <title>Model Selection Lecture Notes</title>
+
+        <script src="modelSelectionLectureNotes_files/header-attrs-2.11/header-attrs.js"></script>
+        <script src="modelSelectionLectureNotes_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href="modelSelectionLectureNotes_files/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+        <script src="modelSelectionLectureNotes_files/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+        <script src="modelSelectionLectureNotes_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+        <script src="modelSelectionLectureNotes_files/navigation-1.1/tabsets.js"></script>
+        <link href="modelSelectionLectureNotes_files/magnific-popup-1.1.0/magnific-popup.css" rel="stylesheet" />
+        <script src="modelSelectionLectureNotes_files/magnific-popup-1.1.0/jquery.magnific-popup.min.js"></script>
+        <link href="modelSelectionLectureNotes_files/downcute-0.1/downcute.css" rel="stylesheet" />
+        <link href="modelSelectionLectureNotes_files/downcute-0.1/downcute_fonts_embed.css" rel="stylesheet" />
+        <script src="modelSelectionLectureNotes_files/downcute-0.1/downcute_styles.js"></script>
+        <script src="modelSelectionLectureNotes_files/downcute-0.1/downcute.js"></script>
+        <script src="modelSelectionLectureNotes_files/prism-1.22/prism.js"></script>
+        <link href="modelSelectionLectureNotes_files/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+        <script src="modelSelectionLectureNotes_files/pagedtable-1.1/js/pagedtable.js"></script>
+    
+    
+    
+    
+    <!-- tabsets -->
+    <script>
+      $(document).ready(function () {
+	  window.buildTabsets("toc");
+      });
+      $(document).ready(function () {
+	  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+	      $(this).parent().toggleClass('nav-tabs-open')
+	  });
+      });
+    </script>
+
+    <!-- code folding -->
+    
+    <!-- code download -->
+    
+    <!-- tabsets dropdown -->
+
+    <style type="text/css">
+      .tabset-dropdown > .nav-tabs {
+	  display: inline-table;
+	  max-height: 500px;
+	  min-height: 44px;
+	  overflow-y: auto;
+	  background: white;
+	  border: 1px solid #ddd;
+	  border-radius: 4px;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li.active:before {
+	  content: "";
+	  font-family: 'Glyphicons Halflings';
+	  display: inline-block;
+	  padding: 10px;
+	  border-right: 1px solid #ddd;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+	  content: "&#xe258;";
+	  border: none;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+	  content: "";
+	  font-family: 'Glyphicons Halflings';
+	  display: inline-block;
+	  padding: 10px;
+	  border-right: 1px solid #ddd;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li.active {
+	  display: block;
+      }
+
+      .tabset-dropdown > .nav-tabs > li.active a {
+  	  padding: 0 15px !important;
+      }
+
+      .tabset-dropdown > .nav-tabs > li > a,
+      .tabset-dropdown > .nav-tabs > li > a:focus,
+      .tabset-dropdown > .nav-tabs > li > a:hover {
+	  border: none;
+	  display: inline-block;
+	  border-radius: 4px;
+	  background-color: transparent;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+	  display: block;
+	  float: none;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li {
+	  display: none;
+	  margin-left: 0 !important;
+      }
+    </style>
+    
+</head>
+
+<body class="preload">
+
+   	
+               <!-- downcute start -->   
+   <div id="docute" class="Root theme-default">
+     <div class="Page layout-narrow">
+      <div class="Wrap">
+        <div class="Sidebar">
+          <div class="SidebarItems" id="toc">
+            <ul>
+            <li><a href="#model-selection-workflow">Model Selection (Workflow)</a></li>
+            </ul>
+          </div>
+          <div data-position="sidebar:post-end" class="InjectedComponents"><div class="dark-theme-toggler"><div class="toggle "><div class="toggle-track"><div class="toggle-track-check"><img  src="data:image/png;base64,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" role="presentation" style="pointer-events: none;" width="16" height="16"></div> <div class="toggle-track-x"><img src="data:image/png;base64,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" role="presentation" style="pointer-events: none;" width="16" height="16"></div></div> <div class="toggle-thumb"></div></div> <input type="checkbox" aria-label="Switch between Dark and Default theme" class="toggler-screen-reader-only"></div></div>
+        </div>
+        <div class="Main">
+          <div class="Content" id="content"> 
+   
+   
+        
+      <h1 class="title">Model Selection Lecture Notes</h1>
+      
+      <p class="authors">
+           <span class="glyphicon glyphicon-user"></span> Justin Meisenhelter
+      </p>
+         <p class="date"><span class="glyphicon glyphicon-calendar"></span> 4/5/2022</p>
+           
+
+   
+      
+   
+<!-- Don't indent these lines or it will mess pre blocks indentation --> 
+<div class="page-content has-page-title">
+<div id="model-selection-workflow" class="section level2">
+<h2>Model Selection (Workflow)</h2>
+<p><strong>PreProcessing</strong><br />
++ Missing Values<br />
++ Label Encoding<br />
++ One-Hot encoding (if using Python must dummify categorical variables first) + When dummifying, drop first column<br />
++ Ordinal categories should be converted to dummies in linear models<br />
++ Feature Engineering + Binarization (encoding a numerical variable into a binary class) + Eliminate Non-Features<br />
++ Eliminate our target variable<br />
++ Choose Hyperparameters</p>
+<div id="preform-discovery-eda" class="section level3">
+<h3>Preform Discovery EDA</h3>
+<ul>
+<li>Is our target variable normally distributed?<br />
+</li>
+<li>For categorical, what is the percentage of each category?<br />
+</li>
+<li>Histogram of all variables</li>
+</ul>
+</div>
+<div id="engineering-features" class="section level3">
+<h3>Engineering Features</h3>
+<ul>
+<li>Generate new features based on eliminating colinearity, but do not drop columns, Lasso regression can select useful features for us.</li>
+</ul>
+</div>
+<div id="train-test-split" class="section level3">
+<h3>Train-Test Split</h3>
+<p>Learning Curve <img src="learning_curve.png" height=500 width=500></p>
+<p>Underfitting on the left, overfitting on the right</p>
+<p>For predictive models, choose hyperparameters for the lowest test error<br />
+for descriptive models, choose hyperparameters for lowest difference between training and test error.</p>
+</div>
+<div id="useful-evaluation" class="section level3">
+<h3>Useful Evaluation</h3>
+<p>Accuracy is, of course, the most common metric we use to evaluate a classification algorithm. It is easy to understand but can sometimes be misleading (therefore not very useful). This is particularly true for an imbalanced dataset, like our churn dataset:</p>
+</div>
+<div id="model-selectiongrid-search" class="section level3">
+<h3>Model Selection/Grid Search</h3>
+<p>From the logistic regression we trained, we used a large <code>C</code> without a justification. In fact, that might not be the best case. Now that we agree to evaluate our model with <code>roc_auc</code> , it’s intuitive to select our model as below:</p>
+</div>
+<div id="varying-distribution-of-the-dependent-variable" class="section level3">
+<h3>Varying Distribution of The Dependent Variable</h3>
+<pre class="python"><code>import time
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt</code></pre>
+<pre class="python"><code>churn = pd.read_csv(&#39;churn.csv.gz&#39;)
+churn.dtypes</code></pre>
+<pre><code>## state                              int64
+## account_length                     int64
+## area_code                          int64
+## phone_number                       int64
+## international_plan                 int64
+## voice_mail_plan                    int64
+## number_vmail_messages              int64
+## total_day_minutes                float64
+## total_day_calls                    int64
+## total_day_charge                 float64
+## total_eve_minutes                float64
+## total_eve_calls                    int64
+## total_eve_charge                 float64
+## total_night_minutes              float64
+## total_night_calls                  int64
+## total_night_charge               float64
+## total_intl_minutes               float64
+## total_intl_calls                   int64
+## total_intl_charge                float64
+## number_customer_service_calls      int64
+## class                              int64
+## dtype: object</code></pre>
+<p><strong>Preprocess data</strong> <strong>Engineer a Feature, Charges per minute </strong></p>
+<pre class="python"><code>for token in [&#39;day&#39;, &#39;night&#39;, &#39;eve&#39;, &#39;intl&#39;]:    
+        churn[&#39;%s_charge_per_minute&#39; %(token)] = \
+        churn[&#39;total_%s_charge&#39; %(token)]/(1e-4+churn[&#39;total_%s_minutes&#39; %(token)])</code></pre>
+<p><strong>Dummify Variables</strong></p>
+<pre class="python"><code>col_2_dummy = [&quot;state&quot;, &quot;area_code&quot;]
+churn = pd.get_dummies(churn, columns=col_2_dummy, drop_first=True)</code></pre>
+<p><strong>Eliminate Non-Features and target Variable</strong><br />
+in our example the phone number is basically an ID, not a feature</p>
+<pre class="python"><code>churn_label = churn[&#39;class&#39;]
+churn_features = churn.drop([&quot;phone_number&quot;, &quot;class&quot;], axis=1)</code></pre>
+<p><strong>Fair Evaluation</strong> Use a basic model</p>
+<pre class="python"><code>from sklearn.linear_model import LogisticRegression
+
+### Train a model
+logit = LogisticRegression(solver=&quot;liblinear&quot;)
+logit.fit(churn_features, churn_label)</code></pre>
+<pre><code>## LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
+##                    intercept_scaling=1, l1_ratio=None, max_iter=100,
+##                    multi_class=&#39;auto&#39;, n_jobs=None, penalty=&#39;l2&#39;,
+##                    random_state=None, solver=&#39;liblinear&#39;, tol=0.0001, verbose=0,
+##                    warm_start=False)</code></pre>
+<p><strong>Make Predictions</strong></p>
+<pre class="python"><code>pred = logit.predict(churn_features)
+### Compute Accuracy
+print((churn_label == pred).mean())
+### Predict probabilities</code></pre>
+<pre><code>## 0.8698</code></pre>
+<pre class="python"><code>print(logit.predict_proba(churn_features))
+### Alternative; more commonly done</code></pre>
+<pre><code>## [[0.90694089 0.09305911]
+##  [0.97009507 0.02990493]
+##  [0.9009227  0.0990773 ]
+##  ...
+##  [0.96007463 0.03992537]
+##  [0.96279137 0.03720863]
+##  [0.99756488 0.00243512]]</code></pre>
+<pre class="python"><code>logit.score(churn_features, churn_label)</code></pre>
+<pre><code>## 0.8698</code></pre>
+<p>Score is number of predictions that are correct (accuracy)</p>
+<p><strong>Train Test Split</strong></p>
+<pre class="python"><code>from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(churn_features, churn_label, test_size=0.3, stratify=churn_label, random_state=0)</code></pre>
+<p><strong>Useful Evaluation</strong> WIth this inbalanced dataset we need to check if the train test splitting have the same ratio</p>
+<pre class="python"><code>print(churn_label.mean())</code></pre>
+<pre><code>## 0.1414</code></pre>
+<p>We also need to keep the same distribution for the training and test datasets. This was taken care of in the train_test_split function:</p>
+<pre class="python"><code>print(y_train.mean())</code></pre>
+<pre><code>## 0.14142857142857143</code></pre>
+<pre class="python"><code>print(y_test.mean())</code></pre>
+<pre><code>## 0.14133333333333334</code></pre>
+<p><strong>Accuracy v.s Confusion Matrix for Imbalanced Data</strong></p>
+<p>If we just train a logistic regression on the churn dataset, we get more than 85% accuracy on both the training and test datasets. Use a large C value to use simple regression, not lasso.</p>
+<pre class="python"><code>from sklearn.linear_model import LogisticRegression
+logistic = LogisticRegression(C=1e8, solver=&#39;liblinear&#39;)
+logistic.fit(X_train, y_train)</code></pre>
+<pre><code>## LogisticRegression(C=100000000.0, class_weight=None, dual=False,
+##                    fit_intercept=True, intercept_scaling=1, l1_ratio=None,
+##                    max_iter=100, multi_class=&#39;auto&#39;, n_jobs=None, penalty=&#39;l2&#39;,
+##                    random_state=None, solver=&#39;liblinear&#39;, tol=0.0001, verbose=0,
+##                    warm_start=False)</code></pre>
+<pre class="python"><code>print(&quot;Train Score&quot;, logistic.score(X_train, y_train))</code></pre>
+<pre><code>## Train Score 0.8728571428571429</code></pre>
+<pre class="python"><code>print(&quot;Test Score&quot;, logistic.score(X_test, y_test))</code></pre>
+<pre><code>## Test Score 0.8593333333333333</code></pre>
+<p>That looks good but if we look more carefully on the confusion matrix, we see a major problem. If we just predict everything to be “not churn”, we will also reach 85% accuracy. But the model wouldn’t learn anything from the dataset:</p>
+<pre class="python"><code>from sklearn.metrics import confusion_matrix, roc_auc_score
+
+def get_confusion_matrix(bi_clf, X, y, thres=0.5):
+    &quot;&quot;&quot;Only good for a binary classifier
+    &quot;&quot;&quot;
+    return confusion_matrix(
+        y,
+        bi_clf.predict_proba(X)[:,1] &gt; thres
+    )
+
+get_confusion_matrix(logistic, X_test, y_test)</code></pre>
+<pre><code>## array([[1243,   45],
+##        [ 166,   46]], dtype=int64)</code></pre>
+<p>First Row are all the negative case (not Churn)<br />
+2nd Row is all the positive case (Churn)<br />
+Our model is very good on negative cases, we got 1243 right and 45 wrong<br />
+On positive cases we got 166 wrong and 46 right. <strong>Our Model learned nothing from the data</strong> We would get the same accuracy is we predicted everything as negative. Our accuracy is ~85%, and our rate of positive cases is ~15%</p>
+<p><strong>Try running it again with a lower threshold value</strong></p>
+<pre class="python"><code>
+get_confusion_matrix(logistic, X_test, y_test, 0.45) # Try 0.4, 0.3, 0.2, ...</code></pre>
+<pre><code>## array([[1227,   61],
+##        [ 157,   55]], dtype=int64)</code></pre>
+<p>We got more True positive cases(46 -&gt; 55), at the sacrifice of true negative cases (1243 -&gt; 1227)<br />
+This is a sacrifice between sensitivity and accuracy<br />
+How good this trading off is can be measured by the <strong>area under the receiver opearting characteristic curve</strong>, or <strong>roc_auc</strong>.</p>
+<pre class="python"><code>from sklearn.metrics import roc_auc_score
+
+print(roc_auc_score(y_test, logistic.predict_proba(X_test)[:,1]))
+# to use ROC model, pass the &#39;True&quot; values (y_test, in this case)
+# and the probability that the value is &#39;True&#39; (logistic.predict_proba(X_test)[:,1])</code></pre>
+<pre><code>## 0.7943022676667058</code></pre>
+<pre class="python"><code>get_confusion_matrix(logistic, X_test, y_test, 0.15)</code></pre>
+<pre><code>## array([[989, 299],
+##        [ 62, 150]], dtype=int64)</code></pre>
+<p>Below we train a logistic regression with <code>class_weight='balanced'</code> to end up with a slightly higher roc_auc. That indicates a better trading off between true positive and true negative. Indeed, with 150 true positive cases this new model has higher true negative than the last model.<br />
+Class weight argument equals to balanced will ignore the actual distribution of positive and negative cases and treat the probability of obtaining either to be equal. It does this by multiplying the log loss by the inverse ratio of actual probability. In a sense increasing the log loss for negative cases.</p>
+<pre class="python"><code>b_logistic = LogisticRegression(C=1e8, solver=&#39;liblinear&#39;, class_weight=&#39;balanced&#39;)
+b_logistic.fit(X_train, y_train)</code></pre>
+<pre><code>## LogisticRegression(C=100000000.0, class_weight=&#39;balanced&#39;, dual=False,
+##                    fit_intercept=True, intercept_scaling=1, l1_ratio=None,
+##                    max_iter=100, multi_class=&#39;auto&#39;, n_jobs=None, penalty=&#39;l2&#39;,
+##                    random_state=None, solver=&#39;liblinear&#39;, tol=0.0001, verbose=0,
+##                    warm_start=False)</code></pre>
+<pre class="python"><code>print(roc_auc_score(y_test, b_logistic.predict_proba(X_test)[:,1]))</code></pre>
+<pre><code>## 0.7945842611039493</code></pre>
+<pre class="python"><code>get_confusion_matrix(b_logistic, X_test, y_test, 0.5) </code></pre>
+<pre><code>## array([[992, 296],
+##        [ 60, 152]], dtype=int64)</code></pre>
+<p>Here we see that the roc_auc is a more “useful” metric to evaluate our classification model than the accuracy.<br />
+BOth True positive and True Negative are better in the balanced case.</p>
+<p><strong>Model Selection/Grid Search</strong> From the logistic regression we trained, we used a large <code>C</code> without a justification. In fact, that might not be the best case. Now that we agree to evaluate our model with <code>roc_auc</code> , it’s intuitive to select our model as below:</p>
+<pre class="python"><code>for C in [0.0001, 0.01, 1, 100, 10000, 1000000, 100000000]:
+    logistic = LogisticRegression(C=C, solver=&#39;liblinear&#39;)
+    logistic.fit(X_train, y_train)
+    print(&quot;C =&quot;, C)
+    print(&quot;Test Score&quot;, logistic.score(X_test, y_test), &quot;\n&quot;)</code></pre>
+<pre><code>## LogisticRegression(C=0.0001, class_weight=None, dual=False, fit_intercept=True,
+##                    intercept_scaling=1, l1_ratio=None, max_iter=100,
+##                    multi_class=&#39;auto&#39;, n_jobs=None, penalty=&#39;l2&#39;,
+##                    random_state=None, solver=&#39;liblinear&#39;, tol=0.0001, verbose=0,
+##                    warm_start=False)
+## C = 0.0001
+## Test Score 0.8593333333333333 
+## 
+## LogisticRegression(C=0.01, class_weight=None, dual=False, fit_intercept=True,
+##                    intercept_scaling=1, l1_ratio=None, max_iter=100,
+##                    multi_class=&#39;auto&#39;, n_jobs=None, penalty=&#39;l2&#39;,
+##                    random_state=None, solver=&#39;liblinear&#39;, tol=0.0001, verbose=0,
+##                    warm_start=False)
+## C = 0.01
+## Test Score 0.8606666666666667 
+## 
+## LogisticRegression(C=1, class_weight=None, dual=False, fit_intercept=True,
+##                    intercept_scaling=1, l1_ratio=None, max_iter=100,
+##                    multi_class=&#39;auto&#39;, n_jobs=None, penalty=&#39;l2&#39;,
+##                    random_state=None, solver=&#39;liblinear&#39;, tol=0.0001, verbose=0,
+##                    warm_start=False)
+## C = 1
+## Test Score 0.8553333333333333 
+## 
+## LogisticRegression(C=100, class_weight=None, dual=False, fit_intercept=True,
+##                    intercept_scaling=1, l1_ratio=None, max_iter=100,
+##                    multi_class=&#39;auto&#39;, n_jobs=None, penalty=&#39;l2&#39;,
+##                    random_state=None, solver=&#39;liblinear&#39;, tol=0.0001, verbose=0,
+##                    warm_start=False)
+## C = 100
+## Test Score 0.8586666666666667 
+## 
+## LogisticRegression(C=10000, class_weight=None, dual=False, fit_intercept=True,
+##                    intercept_scaling=1, l1_ratio=None, max_iter=100,
+##                    multi_class=&#39;auto&#39;, n_jobs=None, penalty=&#39;l2&#39;,
+##                    random_state=None, solver=&#39;liblinear&#39;, tol=0.0001, verbose=0,
+##                    warm_start=False)
+## C = 10000
+## Test Score 0.8573333333333333 
+## 
+## LogisticRegression(C=1000000, class_weight=None, dual=False, fit_intercept=True,
+##                    intercept_scaling=1, l1_ratio=None, max_iter=100,
+##                    multi_class=&#39;auto&#39;, n_jobs=None, penalty=&#39;l2&#39;,
+##                    random_state=None, solver=&#39;liblinear&#39;, tol=0.0001, verbose=0,
+##                    warm_start=False)
+## C = 1000000
+## Test Score 0.8586666666666667 
+## 
+## LogisticRegression(C=100000000, class_weight=None, dual=False,
+##                    fit_intercept=True, intercept_scaling=1, l1_ratio=None,
+##                    max_iter=100, multi_class=&#39;auto&#39;, n_jobs=None, penalty=&#39;l2&#39;,
+##                    random_state=None, solver=&#39;liblinear&#39;, tol=0.0001, verbose=0,
+##                    warm_start=False)
+## C = 100000000
+## Test Score 0.8593333333333333</code></pre>
+<p>So this is why people often call the model selection process <strong>grid search</strong>: searching from the parameter grid for the one that produces the highest score. When searching for more than one parameter, the candidates form a grid.<br />
+In our example the optimum C value is 0.01</p>
+<p>The problem with the approach above is that the dataset is not used efficiently. Some observations are never used for training and some are never used for testing. <strong>Cross validation</strong> can help.<br />
+In our example the optimum C value is 0.01<br />
+KFold splits data sets into 2 sets of indices, for training and test.</p>
+<pre class="python"><code>from sklearn.model_selection import KFold
+
+kfold = KFold(n_splits=3)
+for training_idx, validation_idx in kfold.split(X_train, y_train):
+    print(training_idx, &quot; consists of {} indexes.&quot;.format(len(training_idx)))
+    print(validation_idx, &quot; consists of {} indexes.&quot;.format(len(validation_idx)))
+    print(&quot;\n&quot;)</code></pre>
+<pre><code>## [1167 1168 1169 ... 3497 3498 3499]  consists of 2333 indexes.
+## [   0    1    2 ... 1164 1165 1166]  consists of 1167 indexes.
+## 
+## 
+## [   0    1    2 ... 3497 3498 3499]  consists of 2333 indexes.
+## [1167 1168 1169 ... 2331 2332 2333]  consists of 1167 indexes.
+## 
+## 
+## [   0    1    2 ... 2331 2332 2333]  consists of 2334 indexes.
+## [2334 2335 2336 ... 3497 3498 3499]  consists of 1166 indexes.</code></pre>
+<p><strong>Evaluate a model</strong><br />
+the below example takes the indices from the kfold object to cross validate</p>
+<pre class="python"><code>lm = LogisticRegression(C=1, solver=&#39;liblinear&#39;)
+
+scores = []
+for training_idx, validation_idx in kfold.split(X_train, y_train):
+    X_ = X_train.iloc[training_idx,:]
+    y_ = y_train.iloc[training_idx]
+    lm.fit(X_, y_)
+    scores.append(
+        lm.score(X_train.iloc[validation_idx], y_train.iloc[validation_idx]))
+    </code></pre>
+<pre><code>## LogisticRegression(C=1, class_weight=None, dual=False, fit_intercept=True,
+##                    intercept_scaling=1, l1_ratio=None, max_iter=100,
+##                    multi_class=&#39;auto&#39;, n_jobs=None, penalty=&#39;l2&#39;,
+##                    random_state=None, solver=&#39;liblinear&#39;, tol=0.0001, verbose=0,
+##                    warm_start=False)
+## LogisticRegression(C=1, class_weight=None, dual=False, fit_intercept=True,
+##                    intercept_scaling=1, l1_ratio=None, max_iter=100,
+##                    multi_class=&#39;auto&#39;, n_jobs=None, penalty=&#39;l2&#39;,
+##                    random_state=None, solver=&#39;liblinear&#39;, tol=0.0001, verbose=0,
+##                    warm_start=False)
+## LogisticRegression(C=1, class_weight=None, dual=False, fit_intercept=True,
+##                    intercept_scaling=1, l1_ratio=None, max_iter=100,
+##                    multi_class=&#39;auto&#39;, n_jobs=None, penalty=&#39;l2&#39;,
+##                    random_state=None, solver=&#39;liblinear&#39;, tol=0.0001, verbose=0,
+##                    warm_start=False)</code></pre>
+<pre class="python"><code>print(
+    &quot;The &#39;cross-validation score&#39; for the logistic regression with C={} is {}&quot;.format(
+        lm.get_params()[&quot;C&quot;], np.mean(scores)))</code></pre>
+<pre><code>## The &#39;cross-validation score&#39; for the logistic regression with C=1 is 0.8662861823845477</code></pre>
+<p>could also use a function in sklearn to perform cross validation.</p>
+<pre class="python"><code>from sklearn.model_selection import cross_val_score
+
+lm = LogisticRegression(C=1, solver=&#39;liblinear&#39;)
+scores = cross_val_score(lm, X_train, y_train, cv=kfold)
+print(scores)</code></pre>
+<pre><code>## [0.86718081 0.86375321 0.86792453]</code></pre>
+<pre class="python"><code>print(
+    &quot;The &#39;cross-validation score&#39; for the logistic regression with C={} is {}&quot;.format(
+        lm.get_params()[&quot;C&quot;], np.mean(scores)))</code></pre>
+<pre><code>## The &#39;cross-validation score&#39; for the logistic regression with C=1 is 0.8662861823845477</code></pre>
+<p>Kfold has a shuffle argument to randomize the indices as opposed to splitting data into even adjacent chunks of data</p>
+<pre class="python"><code>kfold = KFold(n_splits=3, shuffle=True, random_state=0)
+for training_idx, validation_idx in kfold.split(X_train, y_train):
+    print(training_idx, &quot; consists of {} indexes.&quot;.format(len(training_idx)))
+    print(validation_idx, &quot; consists of {} indexes.&quot;.format(len(validation_idx)))
+    print(&quot;\n&quot;)</code></pre>
+<pre><code>## [   0    3    5 ... 3496 3497 3498]  consists of 2333 indexes.
+## [   1    2    4 ... 3491 3495 3499]  consists of 1167 indexes.
+## 
+## 
+## [   0    1    2 ... 3497 3498 3499]  consists of 2333 indexes.
+## [   5    6    8 ... 3485 3486 3494]  consists of 1167 indexes.
+## 
+## 
+## [   1    2    4 ... 3494 3495 3499]  consists of 2334 indexes.
+## [   0    3    7 ... 3496 3497 3498]  consists of 1166 indexes.</code></pre>
+<p><strong>Varying Distribution of The Dependent Variable</strong></p>
+<p>With shuffling or not, one issue with random sampling is that the distributions of the dependent variable vary:</p>
+<pre class="python"><code>kfold = KFold(n_splits=3, shuffle=True, random_state=0)
+for training_idx, validation_idx in kfold.split(X_train, y_train):
+    print(&quot;The churn rate of the training set of this fold is {}.&quot;.format(y_train.iloc[training_idx].mean()))
+    print(&quot;The churn rate of the validation set of this fold is {}.&quot;.format(y_train.iloc[validation_idx].mean()))
+    print(&quot;\n&quot;)</code></pre>
+<pre><code>## The churn rate of the training set of this fold is 0.1491641663094728.
+## The churn rate of the validation set of this fold is 0.12596401028277635.
+## 
+## 
+## The churn rate of the training set of this fold is 0.12944706386626662.
+## The churn rate of the validation set of this fold is 0.16538131962296487.
+## 
+## 
+## The churn rate of the training set of this fold is 0.1456726649528706.
+## The churn rate of the validation set of this fold is 0.13293310463121785.</code></pre>
+<p>We can see the distribution of true positive cases varies quite a bit.<br />
+If this is the case we can use <code>StratifiedKFold</code></p>
+<pre class="python"><code>from sklearn.model_selection import StratifiedKFold
+
+skfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=0)
+for training_idx, validation_idx in skfold.split(X_train, y_train):
+    print(&quot;The churn rate of the training set of this fold is {}.&quot;.format(y_train.iloc[training_idx].mean()))
+    print(&quot;The churn rate of the validation set of this fold is {}.&quot;.format(y_train.iloc[validation_idx].mean()))
+    print(&quot;\n&quot;)</code></pre>
+<pre><code>## The churn rate of the training set of this fold is 0.14144877839691383.
+## The churn rate of the validation set of this fold is 0.14138817480719795.
+## 
+## 
+## The churn rate of the training set of this fold is 0.14144877839691383.
+## The churn rate of the validation set of this fold is 0.14138817480719795.
+## 
+## 
+## The churn rate of the training set of this fold is 0.14138817480719795.
+## The churn rate of the validation set of this fold is 0.14150943396226415.</code></pre>
+<p>Can then run a recursive Grid search as previously demonstrated for different C values and perform the cross validation for each value of C</p>
+<pre class="python"><code>skfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=0)
+
+result = {}
+for C in [0.0001, 0.01, 1, 100, 10000, 1000000, 100000000]:
+    logistic = LogisticRegression(C=C, solver=&#39;liblinear&#39;)
+    result[C] = cross_val_score(logistic, X_train, y_train, cv=skfold).mean()
+    
+result</code></pre>
+<pre><code>## {0.0001: 0.8600005487282977, 0.01: 0.8605708342090939, 1: 0.868285856087185, 100: 0.8699979373695239, 10000: 0.8688551616960213, 1000000: 0.8691407943723993, 100000000: 0.8697120597251556}</code></pre>
+<p><strong>Use an SKLearn function to do the same thing</strong></p>
+<pre class="python"><code>from sklearn.model_selection import GridSearchCV
+
+skfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=0)
+logistic = LogisticRegression(solver=&#39;liblinear&#39;)
+params = {
+    &quot;C&quot;: [0.0001, 0.01, 1, 100, 10000, 1000000, 100000000]
+}
+
+gs = GridSearchCV(logistic, params, cv=skfold)
+gs.fit(X_train, y_train)</code></pre>
+<pre><code>## GridSearchCV(cv=StratifiedKFold(n_splits=3, random_state=0, shuffle=True),
+##              error_score=nan,
+##              estimator=LogisticRegression(C=1.0, class_weight=None, dual=False,
+##                                           fit_intercept=True,
+##                                           intercept_scaling=1, l1_ratio=None,
+##                                           max_iter=100, multi_class=&#39;auto&#39;,
+##                                           n_jobs=None, penalty=&#39;l2&#39;,
+##                                           random_state=None, solver=&#39;liblinear&#39;,
+##                                           tol=0.0001, verbose=0,
+##                                           warm_start=False),
+##              iid=&#39;deprecated&#39;, n_jobs=None,
+##              param_grid={&#39;C&#39;: [0.0001, 0.01, 1, 100, 10000, 1000000,
+##                                100000000]},
+##              pre_dispatch=&#39;2*n_jobs&#39;, refit=True, return_train_score=False,
+##              scoring=None, verbose=0)</code></pre>
+<pre class="python"><code>gs.cv_results_[&#39;mean_test_score&#39;]</code></pre>
+<pre><code>## array([0.86000055, 0.86057083, 0.86828586, 0.86999794, 0.86885516,
+##        0.86914079, 0.86971206])</code></pre>
+<p>The output array from the ‘.cv_results_’ attribute give all parameters of the grid search. the “mean test score” array corresponds to the fit for each of the input”C” values.<br />
+After creating the ‘gs’ gridsearch object, it will train the model automatically on the entire data set with the optimized parameter, and become your final model object.</p>
+<p><strong>PIPELINE</strong><br />
+can allow us to pack multiple steps into one process to create a pipline, create a list variable with all sklearn objects</p>
+<pre class="python"><code>from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+import time
+
+logistic = LogisticRegression(max_iter=500, 
+solver=&#39;liblinear&#39;,
+class_weight=&quot;balanced&quot;)
+## must pass a tuple of a name and the model object
+pipe = Pipeline([ 
+    (&quot;standardize&quot;, StandardScaler()), (&#39;logit&#39;, logistic)])
+# any parameters that need to be passed can be denoted by the name previously
+# defined in the tuple followed by a double underscore, and then the paramter name.
+params = {
+    &quot;logit__C&quot;: [0.0001, 0.01, 1, 100, 10000, 1000000, 100000000]
+}
+
+skfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=0)
+
+gs = GridSearchCV(pipe, params, scoring=&quot;roc_auc&quot;, cv=skfold)
+
+start= time.time()
+gs.fit(X_train, y_train)</code></pre>
+<pre><code>## GridSearchCV(cv=StratifiedKFold(n_splits=5, random_state=0, shuffle=True),
+##              error_score=nan,
+##              estimator=Pipeline(memory=None,
+##                                 steps=[(&#39;standardize&#39;,
+##                                         StandardScaler(copy=True,
+##                                                        with_mean=True,
+##                                                        with_std=True)),
+##                                        (&#39;logit&#39;,
+##                                         LogisticRegression(C=1.0,
+##                                                            class_weight=&#39;balanced&#39;,
+##                                                            dual=False,
+##                                                            fit_intercept=True,
+##                                                            intercept_scaling=1,
+##                                                            l1_ratio=None,
+##                                                            max_iter=500,
+##                                                            multi_class=&#39;auto&#39;,
+##                                                            n_jobs=None,
+##                                                            penalty=&#39;l2&#39;,
+##                                                            random_state=None,
+##                                                            solver=&#39;liblinear&#39;,
+##                                                            tol=0.0001,
+##                                                            verbose=0,
+##                                                            warm_start=False))],
+##                                 verbose=False),
+##              iid=&#39;deprecated&#39;, n_jobs=None,
+##              param_grid={&#39;logit__C&#39;: [0.0001, 0.01, 1, 100, 10000, 1000000,
+##                                       100000000]},
+##              pre_dispatch=&#39;2*n_jobs&#39;, refit=True, return_train_score=False,
+##              scoring=&#39;roc_auc&#39;, verbose=0)</code></pre>
+<pre class="python"><code>print(time.time() - start)</code></pre>
+<pre><code>## 27.6424081325531</code></pre>
+<pre class="python"><code>print(&quot;The best parameters are: &quot;, gs.best_params_)</code></pre>
+<pre><code>## The best parameters are:  {&#39;logit__C&#39;: 0.01}</code></pre>
+<pre class="python"><code>print(&quot;The score roc_auc score of the final model: &quot;, gs.score(X_test, y_test))</code></pre>
+<pre><code>## The score roc_auc score of the final model:  0.799645493964608</code></pre>
+<pre class="python"><code>print(&quot;An alternative way to obtain roc_auc: &quot;, roc_auc_score(y_test, gs.predict_proba(X_test)[:,1]))</code></pre>
+<pre><code>## An alternative way to obtain roc_auc:  0.799645493964608</code></pre>
+<pre class="python"><code>get_confusion_matrix(gs, X_test, y_test)</code></pre>
+<pre><code>## array([[962, 326],
+##        [ 56, 156]], dtype=int64)</code></pre>
+<p><strong>Every Step in a pipeline can be cross validated</strong></p>
+<pre class="python"><code>new_params = {
+    &quot;logit__C&quot;: [0.0001, 0.01, 1, 100, 10000, 1000000, 100000000],
+    &quot;standardize__with_mean&quot;: [True, False],
+    &quot;standardize__with_std&quot;: [True, False]
+}
+
+gs = GridSearchCV(pipe, new_params, scoring=&quot;roc_auc&quot;, cv=skfold)
+start= time.time()
+gs.fit(X_train, y_train)</code></pre>
+<pre><code>## GridSearchCV(cv=StratifiedKFold(n_splits=5, random_state=0, shuffle=True),
+##              error_score=nan,
+##              estimator=Pipeline(memory=None,
+##                                 steps=[(&#39;standardize&#39;,
+##                                         StandardScaler(copy=True,
+##                                                        with_mean=True,
+##                                                        with_std=True)),
+##                                        (&#39;logit&#39;,
+##                                         LogisticRegression(C=1.0,
+##                                                            class_weight=&#39;balanced&#39;,
+##                                                            dual=False,
+##                                                            fit_intercept=True,
+##                                                            intercept_scaling=1,
+##                                                            l1_ratio=None,
+##                                                            max_iter=500,
+##                                                            multi_class=&#39;auto&#39;...
+##                                                            random_state=None,
+##                                                            solver=&#39;liblinear&#39;,
+##                                                            tol=0.0001,
+##                                                            verbose=0,
+##                                                            warm_start=False))],
+##                                 verbose=False),
+##              iid=&#39;deprecated&#39;, n_jobs=None,
+##              param_grid={&#39;logit__C&#39;: [0.0001, 0.01, 1, 100, 10000, 1000000,
+##                                       100000000],
+##                          &#39;standardize__with_mean&#39;: [True, False],
+##                          &#39;standardize__with_std&#39;: [True, False]},
+##              pre_dispatch=&#39;2*n_jobs&#39;, refit=True, return_train_score=False,
+##              scoring=&#39;roc_auc&#39;, verbose=0)</code></pre>
+<pre class="python"><code>print(time.time() - start)</code></pre>
+<pre><code>## 64.12869024276733</code></pre>
+<pre class="python"><code>print(&quot;The best parameters are: &quot;, gs.best_params_)</code></pre>
+<pre><code>## The best parameters are:  {&#39;logit__C&#39;: 1, &#39;standardize__with_mean&#39;: True, &#39;standardize__with_std&#39;: False}</code></pre>
+<pre class="python"><code>print(&quot;The score roc_auc score of the final model: &quot;, gs.score(X_test, y_test))</code></pre>
+<pre><code>## The score roc_auc score of the final model:  0.8004951365287706</code></pre>
+<pre class="python"><code>get_confusion_matrix(gs, X_test, y_test)</code></pre>
+<pre><code>## array([[992, 296],
+##        [ 59, 153]], dtype=int64)</code></pre>
+</div>
+</div>
+</div>
+
+   
+   
+              </div>
+  </div>
+  </div>
+  </div>
+   
+      
+
+  <script>
+    $(document).ready(function () {
+
+		// add bootstrap table styles to pandoc tables
+	$('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+		
+ 		
+	    });
+  </script>
+
+
+
+    <!-- dynamically load mathjax for compatibility with self-contained -->
+  <script>
+    (function () {
+	var script = document.createElement("script");
+	script.type = "text/javascript";
+	script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+	document.getElementsByTagName("head")[0].appendChild(script);
+    })();
+  </script>
+  
+</body>
+</html>

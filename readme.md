@@ -28,3 +28,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 
+## Progress  
+### Week 1  
++ April 5th - Cleaned all NA values in test csv
