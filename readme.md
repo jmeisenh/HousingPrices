@@ -26,8 +26,16 @@ knitr::opts_chunk$set(echo = TRUE)
    + MLR model fit on both cleaned test datasets and relevant scoring metrics  
    + Ridge, Lasso, ElasticNet fits on both cleaned datasets  
 
+### Week 2  
+1. Feature Selection
+
 
 
 ## Progress  
 ### Week 1  
 + April 5th - Cleaned all NA values in test csv
++ April 6th - Some EDA , correlation plot
++ April 8th - Initial Feature selection
+
+### Week 2
++ April 12th - Initial Feature Selection completed  and Train Test split 

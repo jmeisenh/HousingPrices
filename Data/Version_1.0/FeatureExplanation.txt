@@ -1,0 +1,6 @@
+Feature Explanation
+            Dropped Low Count Categorical Values
+            Created 3 new metrics for total indor square footage, total outdoor square footage, and total bathrooms, dropped other columns
+            Created a combined quality and condition variabel weighted by correlation to target
+            Changed nominal categorical values to ordinal
+            Created dummy variables and dropped first, sampled by shuffle
