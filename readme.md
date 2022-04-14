@@ -27,7 +27,8 @@ knitr::opts_chunk$set(echo = TRUE)
    + Ridge, Lasso, ElasticNet fits on both cleaned datasets  
 
 ### Week 2  
-1. Feature Selection
+1. Feature Selection  
+2. MLR and elastic net model, some hyperparamter tuning  
 
 
 
@@ -38,4 +39,6 @@ knitr::opts_chunk$set(echo = TRUE)
 + April 8th - Initial Feature selection
 
 ### Week 2
-+ April 12th - Initial Feature Selection completed  and Train Test split 
++ April 12th - Initial Feature Selection completed  and Train Test split   
++ MLR Model $R^2 = .006$  
++ ElasticNet Model $R^2 = 0.86$ (That's improvement)  
