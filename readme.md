@@ -42,3 +42,5 @@ knitr::opts_chunk$set(echo = TRUE)
 + April 12th - Initial Feature Selection completed  and Train Test split   
 + MLR Model $R^2 = .006$  
 + ElasticNet Model $R^2 = 0.86$ (That's improvement)  
++ April 16th - Tries two more version of feature engineering to little to no success  
+
