@@ -350,7 +350,7 @@ CentralAir: Central air conditioning
        N	No
        Y	Yes
 		
-Electrical: Electrical system
+Electrical: brical system
 
        SBrkr	Standard Circuit Breakers & Romex
        FuseA	Fuse Box over 60 AMP and all Romex wiring (Average)	
